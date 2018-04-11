@@ -2,19 +2,12 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import type { Connector } from 'react-redux';
 import { fetchPosts, fetchPostsIfNeeded } from '../../state/modules/posts';
 import Post from '../../components/Post';
-import type { PostsReducer, Dispatch, Reducer } from '../../types';
 // $FlowIssue
 import styles from './style.scss';
 
-type Props = {
-  posts: PostsReducer,
-  fetchPostsIfNeeded: () => void,
-};
-
-export class Home extends Component<Props, *> {
+export class Home extends Component {
   static displayName = 'Home';
 
   static fetchData({ store }) {
@@ -50,9 +43,9 @@ export class Home extends Component<Props, *> {
   }
 }
 
-const connector: Connector<{}, Props> = connect(
-  ({ posts }: Reducer) => ({ posts }),
-  (dispatch: Dispatch) => ({
+const connector = connect(
+  ({ posts }) => ({ posts }),
+  dispatch => ({
     fetchPostsIfNeeded: () => dispatch(fetchPostsIfNeeded()),
   }),
 );

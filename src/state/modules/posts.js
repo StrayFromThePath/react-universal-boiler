@@ -1,16 +1,4 @@
-// @flow
 import fetch from 'isomorphic-unfetch';
-import type {
-  PostsReducer,
-  Action,
-  Dispatch,
-  GetState,
-  ThunkAction,
-  Reducer,
-  PostsType,
-} from '../../types';
-
-type State = PostsReducer;
 
 export const FETCH_POSTS_REQUEST = '@posts/FETCH_POSTS_REQUEST';
 export const FETCH_POSTS_SUCCESS = '@posts/FETCH_POSTS_SUCCESS';
@@ -20,22 +8,22 @@ export function requestPostsStart() {
   return { type: FETCH_POSTS_REQUEST };
 }
 
-export function requestPostsDone(data: PostsType) {
+export function requestPostsDone(data) {
   return {
     type: FETCH_POSTS_SUCCESS,
     payload: data,
   };
 }
 
-export function requestPostsFail(err: Object) {
+export function requestPostsFail(err) {
   return {
     type: FETCH_POSTS_FAILURE,
     error: err.response.status,
   };
 }
 
-export const fetchPosts = (): ThunkAction => {
-  return (dispatch: Dispatch) => {
+export const fetchPosts = () => {
+  return dispatch => {
     dispatch(requestPostsStart());
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(r => r.json())
@@ -46,9 +34,9 @@ export const fetchPosts = (): ThunkAction => {
   };
 };
 
-export const fetchPostsIfNeeded = (): ThunkAction => {
-  return (dispatch: Dispatch, getState: GetState) => {
-    const state: Reducer = getState();
+export const fetchPostsIfNeeded = () => {
+  return (dispatch, getState) => {
+    const state = getState();
     /* istanbul ignore next */
     if (state.posts.list.length === 0) {
       return dispatch(fetchPosts());
@@ -63,7 +51,7 @@ const initialState = {
   error: null,
 };
 
-export default function postsReducer(state: State = initialState, action: Action): State {
+export default function postsReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_POSTS_REQUEST:
       return {

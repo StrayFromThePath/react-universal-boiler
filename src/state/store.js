@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
-// @flow
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import type { Store } from '../types';
 import rootReducer from './reducers';
 
 // This enables Redux Dev Tools chrome extension if it is available on the window.
@@ -33,7 +31,7 @@ const composeEnhancers =
  * @param {Object} history  Either memory history (server) or browser history
  * @return {Object} store
  */
-export default function configureStore(preloadedState: Object, history?: Object): Store {
+export default function configureStore(preloadedState, history) {
   const middleware = [thunkMiddleware];
 
   // Here we only want to include redux-logger during development.
@@ -43,7 +41,7 @@ export default function configureStore(preloadedState: Object, history?: Object)
   }
   const enhancers = [applyMiddleware(...middleware)];
   // Creating the store
-  const store: Store = createStore(rootReducer, preloadedState, composeEnhancers(...enhancers));
+  const store = createStore(rootReducer, preloadedState, composeEnhancers(...enhancers));
   /* istanbul ignore next */
   if (process.env.NODE_ENV === 'development' && module.hot) {
     // $FlowIssue
